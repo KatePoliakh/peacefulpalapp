@@ -1,16 +1,75 @@
-# peacefulpalapp
+# Mental Health App 🌿
 
-A new Flutter project.
+Приложение для улучшения психического здоровья, формирования полезных привычек и получения экстренной помощи. Помогает пользователям снижать стресс, отслеживать прогресс в привычках и получать поддержку в кризисных ситуациях.
 
-## Getting Started
+![App Preview](https://via.placeholder.com/800x400?text=App+Screenshots+Here)
 
-This project is a starting point for a Flutter application.
+## ✨ Основные возможности
 
-A few resources to get you started if this is your first Flutter project:
+- **Трекер привычек**: Создавайте и отслеживайте полезные привычки
+- **Дыхательные упражнения**: Анимированные техники для снижения стресса
+- **Экстренная помощь**: Быстрый доступ к горячим линиям поддержки
+- **Аналитика прогресса**: Визуализация вашего развития
+- **Персонализация**: Темная/светлая тема
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🧩 Технологический стек
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 🗂 Структура проекта
+
+```
+peacefulpalapp/
+├── lib
+│   ├── data
+│   │   ├── datasources
+│   │   ├── models
+│   │   └── repositories
+│   ├── 
+│   ├── presentation
+│   │   ├── screens
+│   │   │   ├── auth
+│   │   │   ├── breathing
+│   │   │   ├── habits
+│   │   │   ├── home
+│   │   │   ├── hotline
+│   │   │   ├── reports
+│   │   │   └── settings
+│   │   └── widgets
+│   ├── services
+│   ├── utils
+│   └── main.dart
+```
+
+## 🚀 Установка и запуск
+
+### Предварительные требования
+- Flutter SDK (версия 3.19.0 или выше)
+- Dart (версия 3.3.0 или выше)
+
+### Шаги установки
+
+1. **Клонируйте репозиторий**
+```bash
+git clone https://github.com/KatePoliakh/peacefulpalapp.git
+cd mental_health_app
+```
+
+2. **Установите зависимости Flutter**
+```bash
+flutter pub get
+```
+
+3. **Запустите приложение**
+```bash
+
+flutter run
+
+```
+
+### Конфигурация окружения
+Создайте файл `.env` в папке `mobile` с содержимым:
+```
+API_URL=https://your-api-endpoint.com
+FIREBASE_PROJECT_ID=your-project-id
+```
+
