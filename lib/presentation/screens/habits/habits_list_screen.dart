@@ -27,7 +27,7 @@ class _HabitsListScreenState extends State<HabitsListScreen> {
   }
 
   Future<void> _loadHabits() async {
-    final habits = await _habitRepository.getHabits(1); // временно user_id = 1
+    final habits = await _habitRepository.getHabits(5);
     setState(() {
       _habits = habits;
     });

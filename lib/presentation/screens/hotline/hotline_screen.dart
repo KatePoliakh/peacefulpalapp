@@ -1,35 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:peacefulpalapp/data/datasources/hotline_api_data_source.dart';
+import 'package:peacefulpalapp/data/models/hotline.dart';
+import 'package:peacefulpalapp/presentation/widgets/custom_app_bar.dart';
+import 'package:peacefulpalapp/presentation/screens/home/navigation.dart';
 
-import '../../../data/datasources/hotline_api_data_source.dart';
-import '../../../data/models/hotline.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../home/navigation.dart';
-
-class HotlineScreen extends StatelessWidget {
+class HotlineScreen extends StatefulWidget {
   static const routeName = '/hotline';
   const HotlineScreen({super.key});
 
-  void _onItemTapped(int index, BuildContext context) {
-    Navigator.pop(context);
+  @override
+  State<HotlineScreen> createState() => _HotlineScreenState();
+}
+
+class _HotlineScreenState extends State<HotlineScreen> {
+  String? _countryCode;
+  late HotlineApiDataSource _dataSource;
+
+  @override
+  void initState() {
+    super.initState();
+    _dataSource = HotlineApiDataSource();
+    _loadCountryCode();
   }
 
-  Future<void> _callNumber(String number) async {
-    final uri = Uri(scheme: 'tel', path: number);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
+  Future<void> _loadCountryCode() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _countryCode = prefs.getString('user_country_code') ?? 'RU';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dataSource = HotlineApiDataSource();
-    const countryCode = "RU";
+    if (_countryCode == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Экстренная помощь'),
       body: FutureBuilder<Hotline?>(
-        future: dataSource.fetchHotlineByCountry(countryCode),
+        future: _dataSource.fetchHotlineByCountry(_countryCode!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -44,76 +55,76 @@ class HotlineScreen extends StatelessWidget {
           }
 
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(24),
             children: [
               ListTile(
                 leading: const Icon(Icons.flag),
-                title: Text('Страна: ${hotline.countryName}'),
+                title: Text(
+                  'Страна: ${hotline.countryName} (${_countryCode!})',
+                ),
               ),
               const Divider(),
-              _buildLine(
+              _buildNumbersTile(
                 context,
-                'Полиция',
-                hotline.policeNumbers,
-                Icons.local_police,
-                Colors.blue,
+                label: 'Полиция',
+                numbers: hotline.policeNumbers,
+                icon: Icons.local_police,
+                chipColor: Colors.blue,
               ),
-              _buildLine(
+              _buildNumbersTile(
                 context,
-                'Скорая помощь',
-                hotline.ambulanceNumbers,
-                Icons.local_hospital,
-                Colors.red,
+                label: 'Скорая помощь',
+                numbers: hotline.ambulanceNumbers,
+                icon: Icons.local_hospital,
+                chipColor: Colors.red,
               ),
-              _buildLine(
+              _buildNumbersTile(
                 context,
-                'Пожарные',
-                hotline.fireNumbers,
-                Icons.fire_truck,
-                Colors.orange,
+                label: 'Пожарная служба',
+                numbers: hotline.fireNumbers,
+                icon: Icons.fire_truck,
+                chipColor: Colors.orange,
               ),
             ],
           );
         },
       ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 2,
+        onItemTapped: (idx) => {},
+      ),
     );
   }
 
-  Widget _buildLine(
-    BuildContext context,
-    String label,
-    List<String> numbers,
-    IconData icon,
-    Color iconColor,
-  ) {
+  Widget _buildNumbersTile(
+    BuildContext context, {
+    required String label,
+    required List<String> numbers,
+    required IconData icon,
+    required Color chipColor,
+  }) {
     if (numbers.isEmpty ||
         (numbers.length == 1 && numbers.first.trim().isEmpty)) {
       return ListTile(
-        leading: Icon(icon, color: iconColor),
+        leading: Icon(icon, color: chipColor),
         title: Text(label),
-        subtitle: const Text('Нет номера'),
+        subtitle: const Text("Нет номера"),
       );
     }
     return ListTile(
-      leading: Icon(icon, color: iconColor),
+      leading: Icon(icon, color: chipColor),
       title: Text(label),
       subtitle: Wrap(
-        spacing: 12,
+        spacing: 10,
         children:
-            numbers
-                .map(
-                  (num) => GestureDetector(
-                    onTap: () => _callNumber(num),
-                    child: Chip(
-                      label: Text(
-                        num,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: iconColor,
-                    ),
-                  ),
-                )
-                .toList(),
+            numbers.map((num) {
+              return GestureDetector(
+                child: Chip(
+                  label: Text(num, style: const TextStyle(color: Colors.white)),
+                  backgroundColor: chipColor,
+                ),
+              );
+            }).toList(),
       ),
     );
   }
