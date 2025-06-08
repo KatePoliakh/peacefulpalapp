@@ -79,10 +79,9 @@ class _HotlineScreenState extends State<HotlineScreen> {
     }
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Экстренная помощь'),
+      appBar: const CustomAppBar(title: 'Emergency help'),
       body: Stack(
         children: [
-          // Фоновый градиент
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -96,7 +95,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
             ),
           ),
 
-          // Декоративные круги
           Positioned(
             top: -50,
             left: -50,
@@ -128,7 +126,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
             ),
           ),
 
-          // Основной контент
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: FutureBuilder<Hotline?>(
@@ -137,10 +134,10 @@ class _HotlineScreenState extends State<HotlineScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text("Ошибка: ${snapshot.error}"));
+                  return Center(child: Text("Error: ${snapshot.error}"));
                 } else if (!snapshot.hasData || snapshot.data == null) {
                   return const Center(
-                    child: Text("Нет данных для вашей страны"),
+                    child: Text("No data for your country"),
                   );
                 }
 
@@ -148,19 +145,9 @@ class _HotlineScreenState extends State<HotlineScreen> {
 
                 return ListView(
                   children: [
-                    Text(
-                      'Экстренные службы',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
                     _buildServiceCard(
                       context,
-                      label: 'Полиция',
+                      label: 'Police',
                       numbers: hotline.policeNumbers,
                       icon: Icons.local_police,
                       chipColor: Colors.blue,
@@ -168,7 +155,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                     const SizedBox(height: 16),
                     _buildServiceCard(
                       context,
-                      label: 'Скорая помощь',
+                      label: 'Ambulance',
                       numbers: hotline.ambulanceNumbers,
                       icon: Icons.local_hospital,
                       chipColor: Colors.red,
@@ -176,7 +163,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                     const SizedBox(height: 16),
                     _buildServiceCard(
                       context,
-                      label: 'Пожарная служба',
+                      label: 'Fire brigate',
                       numbers: hotline.fireNumbers,
                       icon: Icons.fire_truck,
                       chipColor: Colors.orange,
