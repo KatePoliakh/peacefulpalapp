@@ -97,7 +97,6 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-
                 Expanded(
                   child: InkWell(
                     onTap: () {
@@ -176,10 +175,7 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(24),
                       child: Row(
                         children: [
-                          _buildTileIconOrImage(
-                            context,
-                            icon: Icons.air,
-                          ),
+                          _buildTileIconOrImage(context, icon: Icons.air),
                           const SizedBox(width: 16),
                           Expanded(
                             child: Column(
@@ -189,7 +185,6 @@ class HomeScreen extends StatelessWidget {
                                 Text(
                                   'Breathing Exercises',
                                   style: TextStyle(
-
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: theme.textTheme.bodyLarge?.color,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/register_screen.dart';
+import 'package:peacefulpalapp/validators/validation.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -26,9 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       await _repo.login(_emailCtrl.text.trim(), _passCtrl.text.trim());
-      if (mounted) {
+      if (mounted)
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-      }
     } catch (e) {
       setState(() {
         _error = e.toString();
@@ -48,60 +48,35 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: theme.primaryColor,
         foregroundColor: isDarkMode ? Colors.black : Colors.white,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Form(
             key: _formKey,
-            child: ListView(
-              shrinkWrap: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Welcome back',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: theme.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 32),
                 TextFormField(
                   controller: _emailCtrl,
-                  validator:
-                      (v) =>
-                          v != null && v.contains('@')
-                              ? null
-                              : 'Enter a valid email',
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                  ),
+                  validator: validateEmail,
+                  decoration: const InputDecoration(labelText: 'Email'),
                 ),
-                const SizedBox(),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _passCtrl,
-                  validator:
-                      (v) =>
-                          v != null && v.length >= 6
-                              ? null
-                              : 'At least 6 chars',
+                  validator: validatePassword,
                   obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                  ),
+                  decoration: const InputDecoration(labelText: 'Password'),
                 ),
                 const SizedBox(height: 24),
                 if (_error != null)
-                  Text(_error!, style: const TextStyle(color: Colors.red)),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Text(
+                      _error!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ),
                 ElevatedButton(
                   onPressed:
                       _loading
@@ -113,7 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                   child:
                       _loading
-                          ? const CircularProgressIndicator()
+                          ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
                           : const Text('Sign in'),
                 ),
                 TextButton(

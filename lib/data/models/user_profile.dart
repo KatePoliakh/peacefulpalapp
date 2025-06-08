@@ -12,7 +12,7 @@ class UserProfile {
   };
 
   factory UserProfile.fromMap(Map<String, dynamic> map) => UserProfile(
-    id: map['id'],
+    id: map['id'] as int?,
     email: map['email'],
     password: map['password'],
   );
