@@ -27,11 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       await _repo.login(_emailCtrl.text.trim(), _passCtrl.text.trim());
-      if (mounted)
+      if (mounted) {
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      }
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = e.toString().split(':').last.trim();
       });
     } finally {
       setState(() => _loading = false);

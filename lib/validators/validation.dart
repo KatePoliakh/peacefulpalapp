@@ -1,7 +1,8 @@
 String? validateEmail(String? value) {
   if (value == null || value.trim().isEmpty) return 'Enter email';
-  if (!value.contains('@') || !value.contains('.'))
+  if (!value.contains('@') || !value.contains('.')) {
     return 'Enter a valid email';
+  }
   return null;
 }
 

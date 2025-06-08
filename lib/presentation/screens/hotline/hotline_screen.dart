@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, avoid_types_as_parameter_names
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
 import 'package:peacefulpalapp/presentation/screens/reports/reports_screen.dart';
@@ -43,7 +44,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
         Navigator.pushNamed(context, ReportsScreen.routeName);
         break;
       case 2:
-        Navigator.pushNamed(context, HotlineScreen.routeName);
         break;
       case 3:
         Navigator.pushNamed(context, SettingsScreen.routeName);
@@ -53,100 +53,209 @@ class _HotlineScreenState extends State<HotlineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     if (_countryCode == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors:
+                      isDarkMode
+                          ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                          : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
+                ),
+              ),
+            ),
+            const Center(child: CircularProgressIndicator()),
+          ],
+        ),
+      );
     }
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Экстренная помощь'),
-      body: FutureBuilder<Hotline?>(
-        future: _dataSource.fetchHotlineByCountry(_countryCode!),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text("Ошибка: ${snapshot.error}"));
-          }
+      body: Stack(
+        children: [
+          // Фоновый градиент
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors:
+                    isDarkMode
+                        ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                        : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
+              ),
+            ),
+          ),
 
-          final hotline = snapshot.data;
-          if (hotline == null) {
-            return const Center(child: Text("Нет данных для вашей страны"));
-          }
+          // Декоративные круги
+          Positioned(
+            top: -50,
+            left: -50,
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: -50,
+            right: -50,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
+              ),
+            ),
+          ),
 
-          return ListView(
-            padding: const EdgeInsets.all(24),
-            children: [
-              ListTile(
-                leading: const Icon(Icons.flag),
-                title: Text(
-                  'Страна: ${hotline.countryName} (${_countryCode!})',
-                ),
-              ),
-              const Divider(),
-              _buildNumbersTile(
-                context,
-                label: 'Полиция',
-                numbers: hotline.policeNumbers,
-                icon: Icons.local_police,
-                chipColor: Colors.blue,
-              ),
-              _buildNumbersTile(
-                context,
-                label: 'Скорая помощь',
-                numbers: hotline.ambulanceNumbers,
-                icon: Icons.local_hospital,
-                chipColor: Colors.red,
-              ),
-              _buildNumbersTile(
-                context,
-                label: 'Пожарная служба',
-                numbers: hotline.fireNumbers,
-                icon: Icons.fire_truck,
-                chipColor: Colors.orange,
-              ),
-            ],
-          );
-        },
+          // Основной контент
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: FutureBuilder<Hotline?>(
+              future: _dataSource.fetchHotlineByCountry(_countryCode!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Ошибка: ${snapshot.error}"));
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(
+                    child: Text("Нет данных для вашей страны"),
+                  );
+                }
+
+                final hotline = snapshot.data!;
+
+                return ListView(
+                  children: [
+                    Text(
+                      'Экстренные службы',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    _buildServiceCard(
+                      context,
+                      label: 'Полиция',
+                      numbers: hotline.policeNumbers,
+                      icon: Icons.local_police,
+                      chipColor: Colors.blue,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildServiceCard(
+                      context,
+                      label: 'Скорая помощь',
+                      numbers: hotline.ambulanceNumbers,
+                      icon: Icons.local_hospital,
+                      chipColor: Colors.red,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildServiceCard(
+                      context,
+                      label: 'Пожарная служба',
+                      numbers: hotline.fireNumbers,
+                      icon: Icons.fire_truck,
+                      chipColor: Colors.orange,
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 2,
-        onItemTapped: (index) {
-          _onItemTapped(index, context);
-        },
+        onItemTapped: (index) => _onItemTapped(index, context),
       ),
     );
   }
 
-  Widget _buildNumbersTile(
+  Widget _buildServiceCard(
     BuildContext context, {
     required String label,
     required List<String> numbers,
     required IconData icon,
     required Color chipColor,
   }) {
+    final theme = Theme.of(context);
+
     if (numbers.isEmpty ||
         (numbers.length == 1 && numbers.first.trim().isEmpty)) {
-      return ListTile(
-        leading: Icon(icon, color: chipColor),
-        title: Text(label),
-        subtitle: const Text("Нет номера"),
+      return Card(
+        color: theme.cardColor.withOpacity(0.5),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: ListTile(
+          leading: Icon(icon, color: chipColor),
+          title: Text(label),
+          subtitle: const Text("Нет номера"),
+        ),
       );
     }
-    return ListTile(
-      leading: Icon(icon, color: chipColor),
-      title: Text(label),
-      subtitle: Wrap(
-        spacing: 10,
-        children:
-            numbers.map((num) {
-              return GestureDetector(
-                child: Chip(
-                  label: Text(num, style: const TextStyle(color: Colors.white)),
-                  backgroundColor: chipColor,
+
+    return Card(
+      color: theme.cardColor.withOpacity(0.5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: chipColor),
+                const SizedBox(width: 12),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              );
-            }).toList(),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children:
+                  numbers.map((num) {
+                    return Chip(
+                      backgroundColor: chipColor,
+                      label: Text(
+                        num,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }

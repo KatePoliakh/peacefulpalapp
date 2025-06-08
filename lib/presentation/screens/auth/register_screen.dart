@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = e.toString().split(':').last.trim();
       });
     } finally {
       setState(() => _loading = false);
