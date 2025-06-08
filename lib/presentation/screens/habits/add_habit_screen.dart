@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/models/habit.dart';
 import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
@@ -41,11 +41,32 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   Future<void> _saveHabit(BuildContext context) async {
     final name = _controller.text.trim();
+    final theme = Theme.of(context);
 
     final isAnonymous = await AuthRepository().isAnonymous();
     if (isAnonymous) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Anonymous users cannot create habits.")),
+        SnackBar(
+          content: Text(
+            'Anonymous users cannot create habits.',
+            style: TextStyle(color: theme.primaryColor),
+          ),
+          backgroundColor: theme.cardColor.withOpacity(0.9),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: theme.primaryColor, width: 1),
+          ),
+          duration: const Duration(seconds: 3),
+          padding: const EdgeInsets.all(12),
+          elevation: 4,
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar,
+            textColor: theme.primaryColor,
+          ),
+        ),
       );
       return;
     }

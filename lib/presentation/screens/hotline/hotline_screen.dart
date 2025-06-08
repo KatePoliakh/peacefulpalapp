@@ -136,9 +136,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text("Error: ${snapshot.error}"));
                 } else if (!snapshot.hasData || snapshot.data == null) {
-                  return const Center(
-                    child: Text("No data for your country"),
-                  );
+                  return const Center(child: Text("No data for your country"));
                 }
 
                 final hotline = snapshot.data!;
