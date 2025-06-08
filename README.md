@@ -12,7 +12,7 @@
 
 ## Актуальная версия APK
 
-https://github.com/KatePoliakh/peacefulpalapp/releases/tag/v0.0.1
+https://github.com/KatePoliakh/peacefulpalapp/releases/tag/v0.0.2
 
 ## 🚀 Установка и запуск
 
