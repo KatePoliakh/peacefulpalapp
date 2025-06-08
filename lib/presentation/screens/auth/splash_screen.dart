@@ -14,8 +14,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2), () {
-      // логика проверки аутентификации
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
     });
     super.initState();

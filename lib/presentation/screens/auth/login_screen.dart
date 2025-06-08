@@ -1,144 +1,116 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:peacefulpalapp/presentation/screens/auth/register_screen.dart';
+import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
+import 'package:peacefulpalapp/presentation/screens/auth/register_screen.dart';
+import 'package:peacefulpalapp/validators/validation.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
-
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _repo = AuthRepository();
+  final _emailCtrl = TextEditingController();
+  final _passCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String? _error;
+  bool _loading = false;
+
+  Future<void> _login() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      await _repo.login(_emailCtrl.text.trim(), _passCtrl.text.trim());
+      if (mounted)
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign in'),
         backgroundColor: theme.primaryColor,
         foregroundColor: isDarkMode ? Colors.black : Colors.white,
       ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? [
-                        const Color(0xFF4A3B78),
-                        const Color(0xFF1E1E2F),
-                      ]
-                    : [
-                        const Color(0xFFC7B6F9),
-                        const Color(0xFFF5F0FA),
-                      ],
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: -50,
-            left: -50,
-            child: Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -50,
-            right: -50,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
-              ),
-            ),
-          ),
-
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Welcome back',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: TextStyle(
-                        color: theme.inputDecorationTheme.labelStyle?.color,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: theme.inputDecorationTheme.fillColor,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: TextStyle(
-                        color: theme.inputDecorationTheme.labelStyle?.color,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: theme.inputDecorationTheme.fillColor,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  ElevatedButton(
-                    onPressed: () {Navigator.pushNamed(context, HomeScreen.routeName);},
-                    style: theme.elevatedButtonTheme.style,
-                    child: const Text('Sign in'),
-                  ),
-                  const SizedBox(height: 16),
-
-                  TextButton(
-                    onPressed: () {Navigator.pushNamed(context, RegisterScreen.routeName);},
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _emailCtrl,
+                  validator: validateEmail,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _passCtrl,
+                  validator: validatePassword,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                ),
+                const SizedBox(height: 24),
+                if (_error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
                     child: Text(
-                      'Do not have an account?',
-                      style: TextStyle(color: theme.primaryColor),
+                      _error!,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                ],
-              ),
+                ElevatedButton(
+                  onPressed:
+                      _loading
+                          ? null
+                          : () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              _login();
+                            }
+                          },
+                  child:
+                      _loading
+                          ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                          : const Text('Sign in'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      RegisterScreen.routeName,
+                    );
+                  },
+                  child: Text(
+                    'Do not have an account?',
+                    style: TextStyle(color: theme.primaryColor),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

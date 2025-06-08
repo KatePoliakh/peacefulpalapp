@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: const Color(0xFF8E7CC3), 
+  primaryColor: const Color(0xFF8E7CC3),
   appBarTheme: const AppBarTheme(color: Color(0xFF8E7CC3)),
   scaffoldBackgroundColor: Colors.white,
   inputDecorationTheme: InputDecorationTheme(
@@ -25,7 +25,7 @@ final ThemeData lightTheme = ThemeData(
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF5A49A5), 
+  primaryColor: const Color(0xFF5A49A5),
   appBarTheme: const AppBarTheme(color: Color(0xFF5A49A5)),
   scaffoldBackgroundColor: const Color(0xFF1E1E2F),
   inputDecorationTheme: InputDecorationTheme(

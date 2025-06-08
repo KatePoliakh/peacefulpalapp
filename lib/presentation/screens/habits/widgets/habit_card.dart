@@ -1,18 +1,18 @@
 // ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:peacefulpalapp/data/models/habit.dart';
 
 class HabitCard extends StatefulWidget {
-  final String name;
-  final Color color;
-  final List<bool> daysCompleted;
+  final Habit habit;
   final List<DateTime> dates;
- 
+  final Function(Habit updatedHabit)? onProgressChanged;
+
   const HabitCard({
     super.key,
-    required this.name,
-    required this.color,
-    required this.daysCompleted,
+    required this.habit,
     required this.dates,
+    this.onProgressChanged,
   });
 
   @override
@@ -20,19 +20,27 @@ class HabitCard extends StatefulWidget {
 }
 
 class _HabitCardState extends State<HabitCard> {
-  late List<bool> _daysCompleted;
-  double get progress => (_daysCompleted.where((d) => d).length / _daysCompleted.length) * 100;
+  late Habit _habit;
+
+  double get progress {
+    if (_habit.progress.isEmpty) return 0.0;
+    final completed = _habit.progress.values.where((v) => v).length;
+    return (completed / _habit.progress.length) * 100;
+  }
 
   @override
   void initState() {
     super.initState();
-    _daysCompleted = List.from(widget.daysCompleted);
+    _habit = widget.habit;
   }
 
-  void _toggleDay(int index) {
+  void _toggleDay(DateTime date) {
     setState(() {
-      _daysCompleted[index] = !_daysCompleted[index];
+      final day = DateTime(date.year, date.month, date.day);
+      final old = _habit.progress[day] ?? false;
+      _habit.progress[day] = !old;
     });
+    widget.onProgressChanged?.call(_habit);
   }
 
   @override
@@ -43,7 +51,7 @@ class _HabitCardState extends State<HabitCard> {
       padding: const EdgeInsets.only(bottom: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: widget.color.withOpacity(0.2),
+          color: Color(_habit.color).withOpacity(0.2),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -62,10 +70,10 @@ class _HabitCardState extends State<HabitCard> {
                 children: [
                   CircleAvatar(
                     radius: 16,
-                    backgroundColor: widget.color,
+                    backgroundColor: Color(_habit.color),
                     child: Text(
                       '${progress.toInt()}%',
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                      style: const TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -73,8 +81,10 @@ class _HabitCardState extends State<HabitCard> {
                     child: LinearProgressIndicator(
                       value: progress / 100,
                       minHeight: 8,
-                      backgroundColor: widget.color.withOpacity(0.5),
-                      valueColor: AlwaysStoppedAnimation<Color>(widget.color),
+                      backgroundColor: Color(_habit.color).withOpacity(0.5),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(_habit.color),
+                      ),
                     ),
                   ),
                 ],
@@ -82,7 +92,7 @@ class _HabitCardState extends State<HabitCard> {
               const SizedBox(height: 8),
 
               Text(
-                widget.name,
+                _habit.name,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -91,22 +101,32 @@ class _HabitCardState extends State<HabitCard> {
               ),
               const SizedBox(height: 8),
 
-              Row(
-                children: List.generate(7, (i) {
-                  return GestureDetector(
-                    onTap: () => _toggleDay(i),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9),
-                      child: Icon(
-                        _daysCompleted[i] ? Icons.check_circle : Icons.circle_outlined,
-                        size: 24,
-                        color: _daysCompleted[i]
-                            ? theme.primaryColor
-                            : theme.hintColor,
-                      ),
-                    ),
-                  );
-                }),
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                children:
+                    widget.dates.map((date) {
+                      final formattedDate = date.toString().split(' ')[0];
+                      final isDone =
+                          _habit.progress[DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                          )] ??
+                          false;
+
+                      return GestureDetector(
+                        onTap: () => _toggleDay(date),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 9),
+                          child: Icon(
+                            isDone ? Icons.check_circle : Icons.circle_outlined,
+                            size: 24,
+                            color:
+                                isDone ? theme.primaryColor : theme.hintColor,
+                          ),
+                        ),
+                      );
+                    }).toList(),
               ),
             ],
           ),

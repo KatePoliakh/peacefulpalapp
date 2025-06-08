@@ -20,10 +20,7 @@ class BottomNavBar extends StatelessWidget {
         color: theme.cardColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         boxShadow: [
-          BoxShadow(
-            blurRadius: 20,
-            color: theme.primaryColor.withOpacity(0.1),
-          )
+          BoxShadow(blurRadius: 20, color: theme.primaryColor.withOpacity(0.1)),
         ],
       ),
       child: Padding(
@@ -32,9 +29,24 @@ class BottomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildNavItem(context, index: 0, icon: Icons.home, label: 'Home'),
-            _buildNavItem(context, index: 1, icon: Icons.bar_chart, label: 'Progress'),
-            _buildNavItem(context, index: 2, icon: Icons.speaker, label: 'HotLine'),
-            _buildNavItem(context, index: 3, icon: Icons.settings, label: 'Settings'),
+            _buildNavItem(
+              context,
+              index: 1,
+              icon: Icons.bar_chart,
+              label: 'Progress',
+            ),
+            _buildNavItem(
+              context,
+              index: 2,
+              icon: Icons.speaker,
+              label: 'HotLine',
+            ),
+            _buildNavItem(
+              context,
+              index: 3,
+              icon: Icons.settings,
+              label: 'Settings',
+            ),
           ],
         ),
       ),
@@ -56,7 +68,10 @@ class BottomNavBar extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? theme.primaryColor.withOpacity(0.2) : Colors.transparent,
+          color:
+              isSelected
+                  ? theme.primaryColor.withOpacity(0.2)
+                  : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(

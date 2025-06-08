@@ -20,19 +20,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AppBar(
-      backgroundColor: theme.primaryColor, 
+      backgroundColor: theme.primaryColor,
       elevation: 0,
       title: Text(title),
-      leading: leading != null
-          ? Container(
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.3),
-              ),
-              child: leading,
-            )
-          : null,
+      leading:
+          leading != null
+              ? Container(
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.3),
+                ),
+                child: leading,
+              )
+              : null,
       actions: [
         if (trailing != null)
           Container(
@@ -44,19 +45,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: trailing,
           ),
       ],
-      iconTheme: IconThemeData(color: Colors.white), toolbarTextStyle: TextTheme(
-        headlineSmall: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ).bodyMedium, titleTextStyle: TextTheme(
-        headlineSmall: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ).titleLarge,
+      iconTheme: IconThemeData(color: Colors.white),
+      toolbarTextStyle:
+          TextTheme(
+            headlineSmall: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ).bodyMedium,
+      titleTextStyle:
+          TextTheme(
+            headlineSmall: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ).titleLarge,
     );
   }
 }

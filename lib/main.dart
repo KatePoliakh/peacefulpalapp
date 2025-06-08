@@ -14,11 +14,16 @@ import 'package:peacefulpalapp/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  final binding = WidgetsFlutterBinding.ensureInitialized();
+
+  final platformBrightness = binding.window.platformBrightness;
+  final bool isSystemDark = platformBrightness == Brightness.dark;
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
       child: const MyApp(),
-    ), 
+    ),
   );
 }
 
