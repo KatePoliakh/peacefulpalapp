@@ -74,9 +74,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
-                    : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
+                colors:
+                    isDarkMode
+                        ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                        : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
               ),
             ),
           ),
@@ -95,12 +96,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Выберите страну'),
                   subtitle: DropdownButton<String>(
                     value: _selectedCountry,
-                    items: _countries.entries
-                        .map((e) => DropdownMenuItem<String>(
-                              value: e.key,
-                              child: Text('${e.value} (${e.key})'),
-                            ))
-                        .toList(),
+                    items:
+                        _countries.entries
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e.key,
+                                child: Text('${e.value} (${e.key})'),
+                              ),
+                            )
+                            .toList(),
                     onChanged: (code) {
                       if (code != null) {
                         _saveCountry(code);
@@ -110,10 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const Divider(),
 
-                ListTile(
-                  title: const Text('О приложении'),
-                  onTap: () {},
-                ),
+                ListTile(title: const Text('О приложении'), onTap: () {}),
                 const Divider(),
 
                 ElevatedButton.icon(

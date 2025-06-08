@@ -47,7 +47,6 @@ class HomeScreen extends StatelessWidget {
                   _buildGreeting(theme),
                   const SizedBox(height: 32),
 
-                  // Цитата ZenQuotes
                   FutureBuilder<ZenQuote?>(
                     future: ZenQuoteApiDataSource().fetchQuote(),
                     builder: (context, snapshot) {
@@ -73,7 +72,8 @@ class HomeScreen extends StatelessWidget {
                           elevation: 0,
                           color: theme.cardColor.withOpacity(0.74),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(16),
                             child: Column(
@@ -84,7 +84,9 @@ class HomeScreen extends StatelessWidget {
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                     fontSize: 16,
-                                    color: theme.textTheme.bodyLarge?.color ?? Colors.black87,
+                                    color:
+                                        theme.textTheme.bodyLarge?.color ??
+                                        Colors.black87,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -98,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                                       fontSize: 13,
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -120,7 +122,6 @@ class HomeScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // Карточка дыхательных упражнений
                   _buildTileCard(
                     context,
                     icon: Icons.air,
@@ -131,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
 
-                  const SizedBox(height: 20), // Дополнительный отступ снизу
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -206,7 +207,9 @@ class HomeScreen extends StatelessWidget {
                     subtitle,
                     style: TextStyle(
                       fontSize: 14,
-                      color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
+                      color: theme.textTheme.bodyMedium?.color?.withOpacity(
+                        0.8,
+                      ),
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -230,9 +233,10 @@ class HomeScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: isDarkMode
-                  ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
-                  : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
+              colors:
+                  isDarkMode
+                      ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                      : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
             ),
           ),
         ),
@@ -244,9 +248,10 @@ class HomeScreen extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isDarkMode
-                  ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                  : const Color(0xFFC7B6F9).withOpacity(0.5),
+              color:
+                  isDarkMode
+                      ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                      : const Color(0xFFC7B6F9).withOpacity(0.5),
             ),
           ),
         ),
@@ -258,9 +263,10 @@ class HomeScreen extends StatelessWidget {
             height: 100,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isDarkMode
-                  ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                  : const Color(0xFFC7B6F9).withOpacity(0.5),
+              color:
+                  isDarkMode
+                      ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                      : const Color(0xFFC7B6F9).withOpacity(0.5),
             ),
           ),
         ),

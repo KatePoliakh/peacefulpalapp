@@ -5,9 +5,6 @@ class ZenQuote {
   ZenQuote({required this.quote, required this.author});
 
   factory ZenQuote.fromApi(Map<String, dynamic> map) {
-    return ZenQuote(
-      quote: map['q'] ?? '',
-      author: map['a'] ?? '',
-    );
+    return ZenQuote(quote: map['q'] ?? '', author: map['a'] ?? '');
   }
 }
