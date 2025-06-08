@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:peacefulpalapp/presentation/widgets/custom_app_bar.dart';
@@ -87,13 +89,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: ListView(
               children: [
                 ListTile(
-                  title: const Text('Сменить тему'),
+                  title: const Text('Change theme'),
                   trailing: const ThemeSwitcher(),
                 ),
                 const Divider(),
 
                 ListTile(
-                  title: const Text('Выберите страну'),
+                  title: const Text('Choose country'),
                   subtitle: DropdownButton<String>(
                     value: _selectedCountry,
                     items:
@@ -112,15 +114,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                 ),
-                const Divider(),
+               
 
-                ListTile(title: const Text('О приложении'), onTap: () {}),
-                const Divider(),
+               
 
                 ElevatedButton.icon(
                   onPressed: () => _handleLogout(context),
                   icon: Icon(Icons.logout, color: Colors.white),
-                  label: const Text('Выйти из аккаунта'),
+                  label: const Text('Logout'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent.withOpacity(0.7),
                     foregroundColor: Colors.white,
