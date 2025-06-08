@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/models/habit.dart';
+import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 
 class AddHabitScreen extends StatefulWidget {
   static const routeName = '/add_habit';
@@ -38,8 +39,17 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     super.dispose();
   }
 
-  void _saveHabit(BuildContext context) {
+  Future<void> _saveHabit(BuildContext context) async {
     final name = _controller.text.trim();
+
+    final isAnonymous = await AuthRepository().isAnonymous();
+    if (isAnonymous) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Anonymous users cannot create habits.")),
+      );
+      return;
+    }
+
     if (name.isNotEmpty) {
       final progress = <DateTime, bool>{};
       for (int i = -6; i <= 0; i++) {

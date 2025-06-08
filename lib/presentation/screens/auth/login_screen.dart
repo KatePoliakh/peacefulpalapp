@@ -108,6 +108,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(color: theme.primaryColor),
                   ),
                 ),
+                TextButton(
+                  onPressed: () async {
+                    await AuthRepository().loginAnonymously();
+                    if (mounted) {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        HomeScreen.routeName,
+                      );
+                    }
+                  },
+                  child: const Text("Try without creation account"),
+                ),
               ],
             ),
           ),

@@ -1,6 +1,6 @@
-import '../models/user_profile.dart';
-import '../database/app_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../database/app_database.dart';
+import '../models/user_profile.dart';
 import 'package:bcrypt/bcrypt.dart';
 
 class AuthRepository {
@@ -23,6 +23,7 @@ class AuthRepository {
     });
 
     await _setCurrentUserId(userId);
+    await _setAnonymous(false);
   }
 
   Future<UserProfile> login(String email, String password) async {
@@ -44,12 +45,20 @@ class AuthRepository {
 
     final user = UserProfile.fromMap(userData);
     await _setCurrentUserId(user.id!);
+    await _setAnonymous(false);
     return user;
+  }
+
+  Future<void> loginAnonymously() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('current_user_id', -1);
+    await prefs.setBool('is_anonymous', true);
   }
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('current_user_id');
+    await prefs.remove('is_anonymous');
   }
 
   Future<int?> getCurrentUserId() async {
@@ -57,8 +66,18 @@ class AuthRepository {
     return prefs.getInt('current_user_id');
   }
 
+  Future<bool> isAnonymous() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('is_anonymous') ?? false;
+  }
+
   Future<void> _setCurrentUserId(int userId) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('current_user_id', userId);
+  }
+
+  Future<void> _setAnonymous(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_anonymous', value);
   }
 }
