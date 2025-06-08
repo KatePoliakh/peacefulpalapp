@@ -114,9 +114,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                 ),
-               
-
-               
 
                 ElevatedButton.icon(
                   onPressed: () => _handleLogout(context),
