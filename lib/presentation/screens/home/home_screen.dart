@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-       
         break;
       case 1:
         Navigator.pushNamed(context, ReportsScreen.routeName);

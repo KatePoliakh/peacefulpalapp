@@ -27,9 +27,7 @@ class HotlineScreen extends StatelessWidget {
     const countryCode = "RU";
 
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Экстренная помощь',
-      ),
+      appBar: const CustomAppBar(title: 'Экстренная помощь'),
       body: FutureBuilder<Hotline?>(
         future: dataSource.fetchHotlineByCountry(countryCode),
         builder: (context, snapshot) {

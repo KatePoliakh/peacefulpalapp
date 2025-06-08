@@ -33,25 +33,14 @@ class _HabitsListScreenState extends State<HabitsListScreen> {
     });
   }
 
-
   Future<void> _addHabit(BuildContext context) async {
     final newHabit = await Navigator.pushNamed(
       context,
       AddHabitScreen.routeName,
     );
 
-    if (newHabit != null && newHabit is Map<String, dynamic>) {
-      final habit = Habit(
-        id: null,
-        userId: 1,
-        name: newHabit['name'] ?? 'Unnamed Habit',
-        color: newHabit['color']?.value ?? Colors.indigo.value,
-        daysCompleted:
-            newHabit['daysCompleted'] as List<bool>? ??
-            List.generate(7, (_) => false),
-      );
-
-      await _habitRepository.addHabit(habit);
+    if (newHabit != null && newHabit is Habit) {
+      await _habitRepository.addHabit(newHabit);
       await _loadHabits();
     }
   }
@@ -155,6 +144,14 @@ class _HabitsListScreenState extends State<HabitsListScreen> {
                                   7,
                                   (i) => DateTime.now().add(Duration(days: -i)),
                                 ),
+                                onProgressChanged: (updatedHabit) async {
+                                  await _habitRepository.updateHabit(
+                                    updatedHabit,
+                                  );
+                                  setState(() {
+                                    _habits[index] = updatedHabit;
+                                  });
+                                },
                               );
                             },
                           ),

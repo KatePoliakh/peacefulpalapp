@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/models/habit.dart';
 import 'package:peacefulpalapp/data/repositories/habit_repository.dart';
@@ -7,11 +5,13 @@ import 'package:peacefulpalapp/data/repositories/habit_repository.dart';
 class HabitCard extends StatefulWidget {
   final Habit habit;
   final List<DateTime> dates;
+  final Function(Habit updatedHabit)? onProgressChanged;
 
   const HabitCard({
     super.key,
     required this.habit,
     required this.dates,
+    this.onProgressChanged,
   });
 
   @override
@@ -22,8 +22,9 @@ class _HabitCardState extends State<HabitCard> {
   late Habit _habit;
 
   double get progress {
+    if (_habit.progress.isEmpty) return 0.0;
     final completed = _habit.progress.values.where((v) => v).length;
-    return completed / _habit.progress.length * 100;
+    return (completed / _habit.progress.length) * 100;
   }
 
   @override
@@ -34,9 +35,11 @@ class _HabitCardState extends State<HabitCard> {
 
   void _toggleDay(DateTime date) {
     setState(() {
-      _habit.progress[date] = !_habit.progress[date] ?? false;
-      HabitRepository().updateHabit(_habit);
+      final day = DateTime(date.year, date.month, date.day);
+      final old = _habit.progress[day] ?? false;
+      _habit.progress[day] = !old;
     });
+    widget.onProgressChanged?.call(_habit);
   }
 
   @override
@@ -78,7 +81,9 @@ class _HabitCardState extends State<HabitCard> {
                       value: progress / 100,
                       minHeight: 8,
                       backgroundColor: Color(_habit.color).withOpacity(0.5),
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(_habit.color)),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(_habit.color),
+                      ),
                     ),
                   ),
                 ],
@@ -95,25 +100,32 @@ class _HabitCardState extends State<HabitCard> {
               ),
               const SizedBox(height: 8),
 
-              // Кнопки отметок
               Wrap(
                 alignment: WrapAlignment.spaceEvenly,
-                children: widget.dates.map((date) {
-                  final formattedDate = date.toString().split(' ')[0]; 
-                  final isDone = _habit.progress[DateTime(date.year, date.month, date.day)] ?? false;
+                children:
+                    widget.dates.map((date) {
+                      final formattedDate = date.toString().split(' ')[0];
+                      final isDone =
+                          _habit.progress[DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                          )] ??
+                          false;
 
-                  return GestureDetector(
-                    onTap: () => _toggleDay(date),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        isDone ? Icons.check_circle : Icons.circle_outlined,
-                        size: 24,
-                        color: isDone ? theme.primaryColor : theme.hintColor,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      return GestureDetector(
+                        onTap: () => _toggleDay(date),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(
+                            isDone ? Icons.check_circle : Icons.circle_outlined,
+                            size: 24,
+                            color:
+                                isDone ? theme.primaryColor : theme.hintColor,
+                          ),
+                        ),
+                      );
+                    }).toList(),
               ),
             ],
           ),

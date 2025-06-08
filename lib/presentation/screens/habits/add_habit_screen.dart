@@ -42,18 +42,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     final name = _controller.text.trim();
     if (name.isNotEmpty) {
       final progress = <DateTime, bool>{};
-      for (int i = -7; i <= 0; i++) {
+      for (int i = -6; i <= 0; i++) {
         final date = DateTime.now().add(Duration(days: i));
-        progress[date] = false;
+        progress[DateTime(date.year, date.month, date.day)] = false;
       }
-
       final habit = Habit(
         userId: 1,
         name: name,
         color: _selectedColor.value,
         progress: progress,
       );
-
       Navigator.pop(context, habit);
     }
   }

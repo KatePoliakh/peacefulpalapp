@@ -21,7 +21,7 @@ void main() {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ThemeProvider(initialDarkMode: isSystemDark),
+      create: (_) => ThemeProvider(),
       child: const MyApp(),
     ),
   );
