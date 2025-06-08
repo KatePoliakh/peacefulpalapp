@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
@@ -27,11 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       await _repo.login(_emailCtrl.text.trim(), _passCtrl.text.trim());
-      if (mounted)
+      if (mounted) {
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      }
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = e.toString().split(':').last.trim();
       });
     } finally {
       setState(() => _loading = false);
@@ -56,6 +59,15 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text(
+                  'Enter Your Account',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: theme.primaryColor,
+                  ),
+                ),
+                const SizedBox(height: 32),
                 TextFormField(
                   controller: _emailCtrl,
                   validator: validateEmail,
@@ -104,6 +116,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     'Do not have an account?',
+                    style: TextStyle(color: theme.primaryColor),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await AuthRepository().loginAnonymously();
+                    if (mounted) {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        HomeScreen.routeName,
+                      );
+                    }
+                  },
+                  child: Text(
+                    "Try without registration",
                     style: TextStyle(color: theme.primaryColor),
                   ),
                 ),

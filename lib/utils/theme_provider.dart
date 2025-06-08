@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/utils/theme.dart';
 
@@ -15,7 +17,9 @@ class ThemeProvider with ChangeNotifier {
 
   void setSystemTheme() {
     final brightness =
-        MediaQueryData.fromView(WidgetsBinding.instance.window).platformBrightness;
+        MediaQueryData.fromView(
+          WidgetsBinding.instance.window,
+        ).platformBrightness;
     _isDarkMode = brightness == Brightness.dark;
     notifyListeners();
   }

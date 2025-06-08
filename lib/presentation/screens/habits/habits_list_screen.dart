@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/repositories/habit_repository.dart';
 import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
@@ -86,11 +88,6 @@ class _HabitsListScreenState extends State<HabitsListScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final today = DateTime.now();
-    final dates = List<DateTime>.generate(
-      7,
-      (i) => today.add(Duration(days: i)),
-    );
 
     return Scaffold(
       appBar: CustomAppBar(

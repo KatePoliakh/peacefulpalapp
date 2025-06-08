@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/datasources/zen_quote_api_data_source.dart';
 import 'package:peacefulpalapp/data/models/zen_quote.dart';

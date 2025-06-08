@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/login_screen.dart';
+import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
 import 'package:peacefulpalapp/validators/validation.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -31,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = e.toString().split(':').last.trim();
       });
     } finally {
       setState(() => _loading = false);
@@ -138,6 +141,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () async {
+                    await AuthRepository().loginAnonymously();
+                    if (mounted) {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        HomeScreen.routeName,
+                      );
+                    }
+                  },
+                  child: Text(
+                    "Try without registration",
+                    style: TextStyle(color: theme.primaryColor),
+                  ),
+                ),
               ],
             ),
           ),

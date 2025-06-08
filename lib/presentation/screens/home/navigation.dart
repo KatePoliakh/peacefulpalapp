@@ -38,7 +38,7 @@ class BottomNavBar extends StatelessWidget {
             _buildNavItem(
               context,
               index: 2,
-              icon: Icons.speaker,
+              icon: Icons.emergency,
               label: 'HotLine',
             ),
             _buildNavItem(

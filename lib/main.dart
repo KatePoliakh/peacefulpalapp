@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/login_screen.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/register_screen.dart';
@@ -14,10 +16,7 @@ import 'package:peacefulpalapp/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  final binding = WidgetsFlutterBinding.ensureInitialized();
-
-  final platformBrightness = binding.window.platformBrightness;
-  final bool isSystemDark = platformBrightness == Brightness.dark;
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     ChangeNotifierProvider(

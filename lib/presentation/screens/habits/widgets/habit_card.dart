@@ -105,7 +105,6 @@ class _HabitCardState extends State<HabitCard> {
                 alignment: WrapAlignment.spaceEvenly,
                 children:
                     widget.dates.map((date) {
-                      final formattedDate = date.toString().split(' ')[0];
                       final isDone =
                           _habit.progress[DateTime(
                             date.year,
