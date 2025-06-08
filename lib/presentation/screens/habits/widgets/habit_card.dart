@@ -1,17 +1,16 @@
 // ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:peacefulpalapp/data/models/habit.dart';
+import 'package:peacefulpalapp/data/repositories/habit_repository.dart';
 
 class HabitCard extends StatefulWidget {
-  final String name;
-  final Color color;
-  final List<bool> daysCompleted;
+  final Habit habit;
   final List<DateTime> dates;
- 
+
   const HabitCard({
     super.key,
-    required this.name,
-    required this.color,
-    required this.daysCompleted,
+    required this.habit,
     required this.dates,
   });
 
@@ -20,18 +19,23 @@ class HabitCard extends StatefulWidget {
 }
 
 class _HabitCardState extends State<HabitCard> {
-  late List<bool> _daysCompleted;
-  double get progress => (_daysCompleted.where((d) => d).length / _daysCompleted.length) * 100;
+  late Habit _habit;
+
+  double get progress {
+    final completed = _habit.progress.values.where((v) => v).length;
+    return completed / _habit.progress.length * 100;
+  }
 
   @override
   void initState() {
     super.initState();
-    _daysCompleted = List.from(widget.daysCompleted);
+    _habit = widget.habit;
   }
 
-  void _toggleDay(int index) {
+  void _toggleDay(DateTime date) {
     setState(() {
-      _daysCompleted[index] = !_daysCompleted[index];
+      _habit.progress[date] = !_habit.progress[date] ?? false;
+      HabitRepository().updateHabit(_habit);
     });
   }
 
@@ -43,7 +47,7 @@ class _HabitCardState extends State<HabitCard> {
       padding: const EdgeInsets.only(bottom: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: widget.color.withOpacity(0.2),
+          color: Color(_habit.color).withOpacity(0.2),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -62,7 +66,7 @@ class _HabitCardState extends State<HabitCard> {
                 children: [
                   CircleAvatar(
                     radius: 16,
-                    backgroundColor: widget.color,
+                    backgroundColor: Color(_habit.color),
                     child: Text(
                       '${progress.toInt()}%',
                       style: const TextStyle(fontSize: 12, color: Colors.white),
@@ -73,8 +77,8 @@ class _HabitCardState extends State<HabitCard> {
                     child: LinearProgressIndicator(
                       value: progress / 100,
                       minHeight: 8,
-                      backgroundColor: widget.color.withOpacity(0.5),
-                      valueColor: AlwaysStoppedAnimation<Color>(widget.color),
+                      backgroundColor: Color(_habit.color).withOpacity(0.5),
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(_habit.color)),
                     ),
                   ),
                 ],
@@ -82,7 +86,7 @@ class _HabitCardState extends State<HabitCard> {
               const SizedBox(height: 8),
 
               Text(
-                widget.name,
+                _habit.name,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -91,22 +95,25 @@ class _HabitCardState extends State<HabitCard> {
               ),
               const SizedBox(height: 8),
 
-              Row(
-                children: List.generate(7, (i) {
+              // Кнопки отметок
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                children: widget.dates.map((date) {
+                  final formattedDate = date.toString().split(' ')[0]; 
+                  final isDone = _habit.progress[DateTime(date.year, date.month, date.day)] ?? false;
+
                   return GestureDetector(
-                    onTap: () => _toggleDay(i),
+                    onTap: () => _toggleDay(date),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Icon(
-                        _daysCompleted[i] ? Icons.check_circle : Icons.circle_outlined,
+                        isDone ? Icons.check_circle : Icons.circle_outlined,
                         size: 24,
-                        color: _daysCompleted[i]
-                            ? theme.primaryColor
-                            : theme.hintColor,
+                        color: isDone ? theme.primaryColor : theme.hintColor,
                       ),
                     ),
                   );
-                }),
+                }).toList(),
               ),
             ],
           ),

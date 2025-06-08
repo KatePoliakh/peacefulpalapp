@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:peacefulpalapp/data/models/habit.dart';
 
 class AddHabitScreen extends StatefulWidget {
   static const routeName = '/add_habit';
@@ -40,17 +41,19 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   void _saveHabit(BuildContext context) {
     final name = _controller.text.trim();
     if (name.isNotEmpty) {
-      final habit = {
-        'name': name,
-        'progress': 0,
-        'daysCompleted': List<bool>.generate(7, (_) => false),
-        'color': _selectedColor,
-        'dates': List<DateTime>.generate(
-          7,
-          (i) => DateTime.now().add(Duration(days: i)),
-          growable: false,
-        ),
-      };
+      final progress = <DateTime, bool>{};
+      for (int i = -7; i <= 0; i++) {
+        final date = DateTime.now().add(Duration(days: i));
+        progress[date] = false;
+      }
+
+      final habit = Habit(
+        userId: 1,
+        name: name,
+        color: _selectedColor.value,
+        progress: progress,
+      );
+
       Navigator.pop(context, habit);
     }
   }
@@ -68,15 +71,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? const [
-                        Color(0xFF4A3B78),
-                        Color(0xFF1E1E2F),
-                      ]
-                    : const [
-                        Color(0xFFC7B6F9),
-                        Color(0xFFF5F0FA),
-                      ],
+                colors:
+                    isDarkMode
+                        ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                        : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
               ),
             ),
           ),
@@ -89,9 +87,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               height: 150,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -103,9 +102,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -115,7 +115,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             left: 20,
             child: GestureDetector(
               onTap: () {
-                Navigator.pop(context); 
+                Navigator.pop(context);
               },
               child: Container(
                 padding: const EdgeInsets.all(8),
@@ -178,28 +178,32 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: availableColors.map((color) {
-                      final isSelected = color == _selectedColor;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedColor = color;
-                          });
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: color,
-                            border: Border.all(
-                              color: isSelected ? Colors.white : Colors.transparent,
-                              width: isSelected ? 2 : 0,
+                    children:
+                        availableColors.map((color) {
+                          final isSelected = color == _selectedColor;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedColor = color;
+                              });
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: color,
+                                border: Border.all(
+                                  color:
+                                      isSelected
+                                          ? Colors.white
+                                          : Colors.transparent,
+                                  width: isSelected ? 2 : 0,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                          );
+                        }).toList(),
                   ),
 
                   const SizedBox(height: 24),
@@ -212,7 +216,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32,
+                      ),
                     ),
                     child: const Text('Save'),
                   ),
