@@ -72,7 +72,7 @@ class _HabitCardState extends State<HabitCard> {
                     backgroundColor: Color(_habit.color),
                     child: Text(
                       '${progress.toInt()}%',
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                      style: const TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -116,7 +116,7 @@ class _HabitCardState extends State<HabitCard> {
                       return GestureDetector(
                         onTap: () => _toggleDay(date),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 9),
                           child: Icon(
                             isDone ? Icons.check_circle : Icons.circle_outlined,
                             size: 24,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
+import 'package:peacefulpalapp/presentation/screens/reports/reports_screen.dart';
+import 'package:peacefulpalapp/presentation/screens/settings/settings_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:peacefulpalapp/data/datasources/hotline_api_data_source.dart';
 import 'package:peacefulpalapp/data/models/hotline.dart';
@@ -29,6 +32,22 @@ class _HotlineScreenState extends State<HotlineScreen> {
     setState(() {
       _countryCode = prefs.getString('user_country_code') ?? 'RU';
     });
+  }
+
+  void _onItemTapped(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, HomeScreen.routeName);
+        break;
+      case 1:
+        Navigator.pushNamed(context, ReportsScreen.routeName);
+        break;
+      case 2:
+        break;
+      case 3:
+        Navigator.pushNamed(context, SettingsScreen.routeName);
+        break;
+    }
   }
 
   @override
@@ -91,7 +110,9 @@ class _HotlineScreenState extends State<HotlineScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 2,
-        onItemTapped: (idx) => {},
+        onItemTapped: (index) {
+          _onItemTapped(index, context);
+        },
       ),
     );
   }

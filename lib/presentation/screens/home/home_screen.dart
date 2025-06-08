@@ -97,6 +97,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
+
                 Expanded(
                   child: InkWell(
                     onTap: () {
@@ -121,7 +122,6 @@ class HomeScreen extends StatelessWidget {
                           _buildTileIconOrImage(
                             context,
                             icon: Icons.fitness_center,
-                            imageAsset: 'assets/images/habit_icon.png',
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -179,7 +179,6 @@ class HomeScreen extends StatelessWidget {
                           _buildTileIconOrImage(
                             context,
                             icon: Icons.air,
-                            imageAsset: 'assets/images/breathing_icon.png',
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -190,6 +189,7 @@ class HomeScreen extends StatelessWidget {
                                 Text(
                                   'Breathing Exercises',
                                   style: TextStyle(
+
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: theme.textTheme.bodyLarge?.color,
