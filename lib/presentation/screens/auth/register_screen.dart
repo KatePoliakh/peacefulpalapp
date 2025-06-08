@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:peacefulpalapp/presentation/screens/auth/login_screen.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -130,10 +131,18 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () {Navigator.pushNamed(context, HomeScreen.routeName);},
+                    onPressed: () {Navigator.pushNamed(context, LoginScreen.routeName);},
                     style: theme.elevatedButtonTheme.style,
                     child: const Text('Sign up'),
                   ),
+                  TextButton(
+                    onPressed: () {Navigator.pushNamed(context, RegisterScreen.routeName);},
+                    child: Text(
+                      'Already have an account?',
+                      style: TextStyle(color: theme.primaryColor),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),

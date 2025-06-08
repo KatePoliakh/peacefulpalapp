@@ -1,5 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/register_screen.dart';
 
@@ -123,7 +122,7 @@ class OnboardingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                       elevation: 4,
                     ),
-                    child: const Text('Register'),
+                    child: const Text('Get started'),
                   ),
                 ],
               ),
