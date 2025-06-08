@@ -1,13 +1,43 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/login_screen.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
+import 'package:peacefulpalapp/validators/validation.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
-
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _repo = AuthRepository();
+  final _formKey = GlobalKey<FormState>();
+  final _emailCtrl = TextEditingController();
+  final _passCtrl = TextEditingController();
+  bool _loading = false;
+  String? _error;
+
+  Future<void> _register() async {
+    setState(() {
+      _error = null;
+      _loading = true;
+    });
+    try {
+      await _repo.register(_emailCtrl.text.trim(), _passCtrl.text.trim());
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      }
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,141 +50,99 @@ class RegisterScreen extends StatelessWidget {
         backgroundColor: theme.primaryColor,
         foregroundColor: isDarkMode ? Colors.black : Colors.white,
       ),
-      body: Stack(
-        children: [
-          Positioned(
-            top: -50,
-            left: -50,
-            child: Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:
-                    isDarkMode
-                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                        : const Color(0xFFC7B6F9).withOpacity(0.5),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -50,
-            right: -50,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:
-                    isDarkMode
-                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                        : const Color(0xFFC7B6F9).withOpacity(0.5),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 100,
-            right: -50,
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:
-                    isDarkMode
-                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                        : const Color(0xFFC7B6F9).withOpacity(0.5),
-              ),
-            ),
-          ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Create Your Account',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: theme.primaryColor,
+                  ),
+                ),
+                const SizedBox(height: 32),
 
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Create Your Account',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: theme.primaryColor,
+                TextFormField(
+                  controller: _emailCtrl,
+                  validator: validateEmail,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                ),
 
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Full Name',
-                      labelStyle: TextStyle(
-                        color: theme.inputDecorationTheme.labelStyle?.color,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: theme.inputDecorationTheme.fillColor,
+                const SizedBox(height: 16),
+
+                TextFormField(
+                  controller: _passCtrl,
+                  validator: validatePassword,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                ),
 
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: TextStyle(
-                        color: theme.inputDecorationTheme.labelStyle?.color,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: theme.inputDecorationTheme.fillColor,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: TextStyle(
-                        color: theme.inputDecorationTheme.labelStyle?.color,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: theme.inputDecorationTheme.fillColor,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, LoginScreen.routeName);
-                    },
-                    style: theme.elevatedButtonTheme.style,
-                    child: const Text('Sign up'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RegisterScreen.routeName);
-                    },
+                if (_error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
                     child: Text(
-                      'Already have an account?',
-                      style: TextStyle(color: theme.primaryColor),
+                      _error!,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                ],
-              ),
+
+                ElevatedButton(
+                  onPressed:
+                      _loading
+                          ? null
+                          : () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              _register();
+                            }
+                          },
+                  child:
+                      _loading
+                          ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                          : const Text('Sign up'),
+                ),
+
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      LoginScreen.routeName,
+                    );
+                  },
+                  child: Text(
+                    'Already have an account?',
+                    style: TextStyle(color: theme.primaryColor),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
