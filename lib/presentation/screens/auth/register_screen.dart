@@ -1,13 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:peacefulpalapp/presentation/screens/auth/register_screen.dart';
+import 'package:peacefulpalapp/presentation/screens/auth/login_screen.dart';
 import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  static const routeName = '/login';
+class RegisterScreen extends StatelessWidget {
+  static const routeName = '/register';
 
-  const LoginScreen({super.key});
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,30 +16,12 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign in'),
+        title: const Text('Sign up'),
         backgroundColor: theme.primaryColor,
         foregroundColor: isDarkMode ? Colors.black : Colors.white,
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? [
-                        const Color(0xFF4A3B78),
-                        const Color(0xFF1E1E2F),
-                      ]
-                    : [
-                        const Color(0xFFC7B6F9),
-                        const Color(0xFFF5F0FA),
-                      ],
-              ),
-            ),
-          ),
-
           Positioned(
             top: -50,
             left: -50,
@@ -68,6 +50,20 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
+          Positioned(
+            top: 100,
+            right: -50,
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isDarkMode
+                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+              ),
+            ),
+          ),
 
           Center(
             child: Padding(
@@ -77,7 +73,7 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Welcome back',
+                    'Create Your Account',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -85,6 +81,22 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
+
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Full Name',
+                      labelStyle: TextStyle(
+                        color: theme.inputDecorationTheme.labelStyle?.color,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: theme.inputDecorationTheme.fillColor,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
                   TextFormField(
                     decoration: InputDecoration(
@@ -118,18 +130,15 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-
                   ElevatedButton(
-                    onPressed: () {Navigator.pushNamed(context, HomeScreen.routeName);},
+                    onPressed: () {Navigator.pushNamed(context, LoginScreen.routeName);},
                     style: theme.elevatedButtonTheme.style,
-                    child: const Text('Sign in'),
+                    child: const Text('Sign up'),
                   ),
-                  const SizedBox(height: 16),
-
                   TextButton(
                     onPressed: () {Navigator.pushNamed(context, RegisterScreen.routeName);},
                     child: Text(
-                      'Do not have an account?',
+                      'Already have an account?',
                       style: TextStyle(color: theme.primaryColor),
                     ),
                   ),
