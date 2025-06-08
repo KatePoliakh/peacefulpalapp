@@ -2,42 +2,55 @@ class Habit {
   final int? id;
   final int userId;
   final String name;
-  final int color; // int value (Color)
-  final List<bool> daysCompleted;
+  final int color; // Color.value
+  final Map<DateTime, bool> progress;
 
   Habit({
     this.id,
     required this.userId,
     required this.name,
     required this.color,
-    required this.daysCompleted,
+    required this.progress,
   });
 
   Map<String, dynamic> toMap() {
+    List<String> _progressList = [];
+
+    progress.forEach((date, done) {
+      _progressList.add('${date.toString()}:$done');
+    });
+
     return {
       'id': id,
       'user_id': userId,
       'name': name,
       'color': color,
-      'daysCompleted': daysCompleted.toString(), // JSON строка
+      'progress': _progressList.join(';'),
     };
   }
 
   factory Habit.fromMap(Map<String, dynamic> map) {
-    List<bool> _days;
-    try {
-      // дешифруем из '[true, false, ...]' в List<bool>
-      final raw = map['daysCompleted'] as String;
-      _days = raw.substring(1, raw.length - 1).split(',').map((e) => e.trim() == 'true').toList();
-    } catch (_) {
-      _days = List.filled(7, false);
+    List<String> rawProgress = (map['progress'] as String).split(';');
+
+    Map<DateTime, bool> _progressMap = {};
+
+    for (var pair in rawProgress) {
+      var parts = pair.split(':');
+      if (parts.length == 2) {
+        try {
+          var date = DateTime.parse(parts[0]);
+          var done = parts[1] == 'true';
+          _progressMap[date] = done;
+        } catch (_) {}
+      }
     }
+
     return Habit(
       id: map['id'],
       userId: map['user_id'],
       name: map['name'],
       color: map['color'],
-      daysCompleted: _days,
+      progress: _progressMap,
     );
   }
 }

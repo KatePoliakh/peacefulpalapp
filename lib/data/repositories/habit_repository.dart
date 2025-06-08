@@ -1,10 +1,15 @@
+import 'package:sqflite/sqflite.dart';
 import '../database/app_database.dart';
 import '../models/habit.dart';
 
 class HabitRepository {
   Future<List<Habit>> getHabits(int userId) async {
     final db = await AppDatabase.database;
-    final result = await db.query('habits', where: 'user_id = ?', whereArgs: [userId]);
+    final result = await db.query(
+      'habits',
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    );
     return result.map((map) => Habit.fromMap(map)).toList();
   }
 
@@ -15,7 +20,12 @@ class HabitRepository {
 
   Future<void> updateHabit(Habit habit) async {
     final db = await AppDatabase.database;
-    await db.update('habits', habit.toMap(), where: 'id = ?', whereArgs: [habit.id]);
+    await db.update(
+      'habits',
+      habit.toMap(),
+      where: 'id = ?',
+      whereArgs: [habit.id],
+    );
   }
 
   Future<void> deleteHabit(int habitId) async {

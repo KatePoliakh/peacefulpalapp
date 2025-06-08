@@ -27,15 +27,10 @@ class LoginScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? [
-                        const Color(0xFF4A3B78),
-                        const Color(0xFF1E1E2F),
-                      ]
-                    : [
-                        const Color(0xFFC7B6F9),
-                        const Color(0xFFF5F0FA),
-                      ],
+                colors:
+                    isDarkMode
+                        ? [const Color(0xFF4A3B78), const Color(0xFF1E1E2F)]
+                        : [const Color(0xFFC7B6F9), const Color(0xFFF5F0FA)],
               ),
             ),
           ),
@@ -48,9 +43,10 @@ class LoginScreen extends StatelessWidget {
               height: 150,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -62,9 +58,10 @@ class LoginScreen extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -120,14 +117,18 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   ElevatedButton(
-                    onPressed: () {Navigator.pushNamed(context, HomeScreen.routeName);},
+                    onPressed: () {
+                      Navigator.pushNamed(context, HomeScreen.routeName);
+                    },
                     style: theme.elevatedButtonTheme.style,
                     child: const Text('Sign in'),
                   ),
                   const SizedBox(height: 16),
 
                   TextButton(
-                    onPressed: () {Navigator.pushNamed(context, RegisterScreen.routeName);},
+                    onPressed: () {
+                      Navigator.pushNamed(context, RegisterScreen.routeName);
+                    },
                     child: Text(
                       'Do not have an account?',
                       style: TextStyle(color: theme.primaryColor),

@@ -10,11 +10,7 @@ class AppDatabase {
     if (_db != null) return _db!;
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "peaceful_pal.db");
-    _db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    _db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return _db!;
   }
 
@@ -28,13 +24,13 @@ class AppDatabase {
     ''');
 
     await db.execute('''
-      CREATE TABLE habits (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        name TEXT,
-        color INTEGER,
-        daysCompleted TEXT
-      )
-    ''');
+    CREATE TABLE habits (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      name TEXT,
+      color INTEGER,
+      progress TEXT
+    )
+  ''');
   }
 }

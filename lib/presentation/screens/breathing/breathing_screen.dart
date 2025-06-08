@@ -20,8 +20,8 @@ class _BreathingScreenState extends State<BreathingScreen>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
-  int _currentPhase = 0; 
-  final List<int> _durations = [4, 7, 8]; 
+  int _currentPhase = 0;
+  final List<int> _durations = [4, 7, 8];
   final List<String> _phases = ['Inhale', 'Hold', 'Exhale'];
   String get _phaseText => _phases[_currentPhase];
 
@@ -80,10 +80,7 @@ class _BreathingScreenState extends State<BreathingScreen>
     );
 
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.5).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
 
@@ -108,15 +105,10 @@ class _BreathingScreenState extends State<BreathingScreen>
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? const [
-                        Color(0xFF4A3B78),
-                        Color(0xFF1E1E2F),
-                      ]
-                    : const [
-                        Color(0xFFC7B6F9),
-                        Color(0xFFF5F0FA),
-                      ],
+                colors:
+                    isDarkMode
+                        ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                        : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
               ),
             ),
           ),
@@ -128,9 +120,10 @@ class _BreathingScreenState extends State<BreathingScreen>
               height: 150,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -142,9 +135,10 @@ class _BreathingScreenState extends State<BreathingScreen>
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -177,10 +171,7 @@ class _BreathingScreenState extends State<BreathingScreen>
 
                   Text(
                     _isStarted ? '$_currentSecond sec.' : '',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white70,
-                    ),
+                    style: const TextStyle(fontSize: 18, color: Colors.white70),
                   ),
 
                   const SizedBox(height: 40),
@@ -215,10 +206,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                   const SizedBox(height: 40),
 
                   if (!_isStarted)
-                    PrimaryButton(
-                      text: 'Start',
-                      onPressed: _startBreathing,
-                    ),
+                    PrimaryButton(text: 'Start', onPressed: _startBreathing),
                 ],
               ),
             ),

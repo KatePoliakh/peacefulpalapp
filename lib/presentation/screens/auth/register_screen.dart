@@ -30,9 +30,10 @@ class RegisterScreen extends StatelessWidget {
               height: 150,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -44,9 +45,10 @@ class RegisterScreen extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -58,9 +60,10 @@ class RegisterScreen extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -131,12 +134,16 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () {Navigator.pushNamed(context, LoginScreen.routeName);},
+                    onPressed: () {
+                      Navigator.pushNamed(context, LoginScreen.routeName);
+                    },
                     style: theme.elevatedButtonTheme.style,
                     child: const Text('Sign up'),
                   ),
                   TextButton(
-                    onPressed: () {Navigator.pushNamed(context, RegisterScreen.routeName);},
+                    onPressed: () {
+                      Navigator.pushNamed(context, RegisterScreen.routeName);
+                    },
                     child: Text(
                       'Already have an account?',
                       style: TextStyle(color: theme.primaryColor),

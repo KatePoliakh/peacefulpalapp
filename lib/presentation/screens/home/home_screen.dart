@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         break;
       case 2:
         Navigator.pushNamed(context, HotlineScreen.routeName);
-      break;
+        break;
       case 3:
         Navigator.pushNamed(context, SettingsScreen.routeName);
         break;
@@ -37,15 +37,16 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       body: Stack(
-        children: [ 
+        children: [
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
-                    : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
+                colors:
+                    isDarkMode
+                        ? const [Color(0xFF4A3B78), Color(0xFF1E1E2F)]
+                        : const [Color(0xFFC7B6F9), Color(0xFFF5F0FA)],
               ),
             ),
           ),
@@ -58,9 +59,10 @@ class HomeScreen extends StatelessWidget {
               height: 150,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -72,9 +74,10 @@ class HomeScreen extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDarkMode
-                    ? const Color(0xFF8E7CC3).withOpacity(0.3)
-                    : const Color(0xFFC7B6F9).withOpacity(0.5),
+                color:
+                    isDarkMode
+                        ? const Color(0xFF8E7CC3).withOpacity(0.3)
+                        : const Color(0xFFC7B6F9).withOpacity(0.5),
               ),
             ),
           ),
@@ -140,7 +143,8 @@ class HomeScreen extends StatelessWidget {
                                   'Track your daily habits and progress.',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
+                                    color: theme.textTheme.bodyMedium?.color
+                                        ?.withOpacity(0.8),
                                   ),
                                 ),
                               ],
@@ -197,7 +201,8 @@ class HomeScreen extends StatelessWidget {
                                   'Practice calming breathing techniques.',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
+                                    color: theme.textTheme.bodyMedium?.color
+                                        ?.withOpacity(0.8),
                                   ),
                                 ),
                               ],
@@ -236,8 +241,12 @@ class HomeScreen extends StatelessWidget {
         width: 48,
         height: 48,
         fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) =>
-            Icon(icon ?? Icons.question_mark, size: 40, color: theme.primaryColor),
+        errorBuilder:
+            (_, __, ___) => Icon(
+              icon ?? Icons.question_mark,
+              size: 40,
+              color: theme.primaryColor,
+            ),
       );
     } else if (icon != null) {
       return Icon(icon, size: 40, color: theme.primaryColor);
