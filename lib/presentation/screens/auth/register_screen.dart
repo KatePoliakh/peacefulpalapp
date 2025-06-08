@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/repositories/auth_repository.dart';
 import 'package:peacefulpalapp/presentation/screens/auth/login_screen.dart';
-import 'package:peacefulpalapp/presentation/screens/home/home_screen.dart';
 import 'package:peacefulpalapp/validators/validation.dart';
 
 class RegisterScreen extends StatefulWidget {

@@ -43,6 +43,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
         Navigator.pushNamed(context, ReportsScreen.routeName);
         break;
       case 2:
+       Navigator.pushNamed(context, HotlineScreen.routeName);
         break;
       case 3:
         Navigator.pushNamed(context, SettingsScreen.routeName);

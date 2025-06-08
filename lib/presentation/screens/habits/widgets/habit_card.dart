@@ -1,6 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:peacefulpalapp/data/models/habit.dart';
-import 'package:peacefulpalapp/data/repositories/habit_repository.dart';
 
 class HabitCard extends StatefulWidget {
   final Habit habit;
